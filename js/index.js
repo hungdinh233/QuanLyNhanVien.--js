@@ -24,7 +24,19 @@ function creatStaff() {
   );
   //   push staff mới thêm vào danh sách và cho hiện ra console
   staffList.push(newStaff);
-  console.log(staffList);
+  // console.log(staffList);
+
+  // kiểm tra validation form
+  var isValid = validation();
+  if (!isValid) {
+    return alert("Vui lòng kiểm tra giá trị input");
+  }
+  // kiểm tra account có trùng?
+  var index = findStaff(account);
+  if (index !== -1) {
+    return alert("Account đã bị trùng");
+  }
+
   renderTable();
   setData();
 }
@@ -191,3 +203,92 @@ function resetLogIn() {
 // function classSearch () {
 //   document.getElementById("")
 // }
+
+// VALIDATION
+function validation() {
+  var isValid = document.getElementById("staffForm").checkValidity();
+  if (!isValid) {
+    // check valid account
+    var inpAccount = document.getElementById("tknv");
+    var spanAccount = document.getElementById("tbTKNV");
+    if (inpAccount.validity.valueMissing) {
+      spanAccount.innerHTML = "Tài khoản không được để trống";
+    } else if (inpAccount.validity.patternMismatch) {
+      spanAccount.innerHTML = "Tài khoản là số và từ 4-6 chữ số";
+    } else {
+      spanAccount.innerHTML = "";
+    }
+    //  check valid tên
+    var inpName = document.getElementById("name");
+    var spanName = document.getElementById("tbTen");
+    if (inpName.validity.valueMissing) {
+      spanName.innerHTML = "Tên không được để trống";
+    } else if (inpName.validity.patternMismatch) {
+      spanName.innerHTML = "Tên phải là chữ";
+    } else {
+      spanName.innerHTML = "";
+    }
+    // check valid email
+    var inpEmail = document.getElementById("email");
+    var spanEmail = document.getElementById("tbEmail");
+    if (inpEmail.validity.valueMissing) {
+      spanEmail.innerHTML = "Email không được để trống";
+    } else if (inpEmail.validity.patternMismatch) {
+      spanEmail.innerHTML = "Email không đúng định dạng";
+    } else {
+      spanEmail.innerHTML = "";
+    }
+    // check valid password
+    var inpPasword = document.getElementById("password");
+    var spanPassword = document.getElementById("tbMatKhau");
+    if (inpPasword.validity.valueMissing) {
+      spanPassword.innerHTML = "Password không được để trống";
+    } else if (inpPasword.validity.patternMismatch) {
+      spanPassword.innerHTML =
+        "Pasword phải từ 6 - 10 ký tự, có ít nhất 1 chữ in hoa , 1 số và 1 ký tự đặc biệt";
+    } else {
+      spanPassword.innerHTML = "";
+    }
+    // check valid ngày làm
+    var inpDate = document.getElementById("datepicker");
+    var spanDate = document.getElementById("tbNgay");
+    if (inpDate.validity.valueMissing) {
+      spanDate.innerHTML = "Ngày làm không được để trống";
+    } else if (inpDate.validity.typeMismatch) {
+      spanDate.innerHTML = "Ngày làm sai định dạng";
+    } else {
+      spanDate.innerHTML = "";
+    }
+    // check valid lương
+    var inpSalary = document.getElementById("luongCB");
+    var spanSalary = document.getElementById("tbLuongCB");
+    if (inpSalary.validity.valueMissing) {
+      spanSalary.innerHTML = "Lương không được để trống";
+    } else if (inpSalary.validity.patternMismatch) {
+      spanSalary.innerHTML = "Lương cơ bản phải là số, từ 1000000 - 20000000";
+    } else {
+      spanSalary.innerHTML = "";
+    }
+    // check valid chức vụ
+    var inpLevel = document.getElementById("chucvu");
+    var spanLevel = document.getElementById("tbChucVu");
+    if (inpLevel.validity.valueMissing) {
+      spanLevel.innerHTML = "Chức vụ không được để trống";
+    } else {
+      spanLevel.innerHTML = "";
+    }
+    // check valid giờ làm
+    var inpTime = document.getElementById("gioLam");
+    var spanTime = document.getElementById("tbGiolam");
+    if (inpTime.validity.valueMissing) {
+      spanTime.innerHTML = "Số giờ làm không được để trống";
+    } else if (inpTime.validity.rangeOverflow) {
+      spanTime.innerHTML = "Số giờ làm phải từ 80 - 200 giờ";
+    } else if (inpTime.validity.rangeUnderflow) {
+      spanTime.innerHTML = "Số giờ làm phải từ 80 - 200 giờ";
+    } else {
+      spanTime.innerHTML = "";
+    }
+  }
+  return isValid;
+}
