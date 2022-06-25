@@ -44,10 +44,12 @@ function renderTable() {
         <td>${currentStaff.level}</td>
         <td>${currentStaff.totalSalary()}</td>
         <td>${currentStaff.staffClassification()}</td>
-        <td><button class="btn btn-danger" onclick ="deleteStaff('${
+        <td><button class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick ="deleteStaff('${
           currentStaff.account
-        }')">Xóa</button></td> 
-        <td><button class="btn btn-success" onclick ="getStaffInfo('${
+        }')">Xóa</button>
+        </td>
+        <td>
+        <button class="btn btn-warning" onclick ="getStaffInfo('${
           currentStaff.account
         }')">Cập nhật</button></td>
         </tr>      
@@ -105,17 +107,23 @@ function findStaff(a) {
 // function xóa nhân viên trong bảng thông qua hàm findStaff
 function deleteStaff(a) {
   var index = findStaff(a);
+  if (index === -1) {
+    return alert("Account không hợp lệ!");
+  }
   staffList.splice(index, 1);
   setData();
   renderTable();
 }
 
-// cập nhật thông tin nhân viên
+// CẬP NHẬT THÔNG TIN NHÂN VIÊN
+// 1. lấy thông tin nhân viên để lên lại input
 
 function getStaffInfo(a) {
   var index = findStaff(a);
+  if (index === -1) {
+    return alert("Account không hợp lệ!");
+  }
   var currentStaffInfo = staffList[index];
-
   document.getElementById("tknv").value = currentStaffInfo.account;
   document.getElementById("name").value = currentStaffInfo.name;
   document.getElementById("email").value = currentStaffInfo.email;
@@ -125,6 +133,61 @@ function getStaffInfo(a) {
   document.getElementById("gioLam").value = currentStaffInfo.workingHours;
   // disable account để không sửa
   document.getElementById("tknv").disabled = true;
+  document.getElementById("btnThemNV").style.display = "none";
   // hiện ô input để nhập
-  document.getElementById("modal").style.display = block;
+  $("#myModal").modal();
 }
+
+//2. lưu thông tin đã sửa và cập nhật thành công
+function updateInfo() {
+  // lấy dữ liệu mới từ input
+  var account = document.getElementById("tknv").value;
+  var name = document.getElementById("name").value;
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+  var dateStarted = document.getElementById("datepicker").value;
+  var basicSalary = +document.getElementById("luongCB").value;
+  var level = document.getElementById("chucvu").value;
+  var workingHours = +document.getElementById("gioLam").value;
+
+  //  dựa vào account tìm ra vị trí của đối tượng cần sửa trong stafflist để cập nhật nó
+  var index = findStaff(account);
+  if (index === -1) {
+    return alert("Account không hợp lệ!");
+  }
+  var foundStaff = staffList[index];
+  foundStaff.name = name;
+  foundStaff.email = email;
+  foundStaff.password = password;
+  foundStaff.dateStarted = dateStarted;
+  foundStaff.basicSalary = basicSalary;
+  foundStaff.level = level;
+  foundStaff.workingHours = workingHours;
+  document.getElementById("btnThemNV").style.display = "inline-block";
+  document.getElementById("tknv").disabled = false;
+  // ẩn Log In khi cập nhật thành công
+  $("#myModal").modal("hide");
+
+  setData();
+  renderTable();
+  alert("Đã cập nhật - Updated!");
+  return;
+}
+// xóa hết thông tin trong Log in khi user click Đóng
+function resetLogIn() {
+  document.getElementById("tknv").value = "";
+  document.getElementById("name").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("password").value = "";
+  document.getElementById("datepicker").value = "";
+  document.getElementById("luongCB").value = "";
+  document.getElementById("gioLam").value = "";
+
+  document.getElementById("tknv").disabled = false;
+  document.getElementById("btnThemNV").style.display = "inline-block";
+}
+
+//SEARCH NHÂN VIÊN THEO LOẠI
+// function classSearch () {
+//   document.getElementById("")
+// }

@@ -137,6 +137,7 @@
                     id="btnThem"
                     data-toggle="modal"
                     data-target="#myModal"
+                    onclick="resetLogIn()"
                   >
                     Thêm nhân viên
                   </button>
@@ -165,7 +166,7 @@
               </div>
               <table class="table table-bordered table-hover myTable">
                 <thead class="text-primary">
-                  <tr>
+                  <tr class="tr">
                     <th class="nowrap">
                       <span class="mr-1">Tài khoản</span>
                       <i class="fa fa-arrow-up" id="SapXepTang"></i>
@@ -177,7 +178,7 @@
                     <th>Chức vụ</th>
                     <th>Tổng lương</th>
                     <th>Xếp loại</th>
-                    <th><em class="fa fa-cog"></em></th>
+                    <th colspan="2"><em class="fa fa-cog"></em></th>
                   </tr>
                 </thead>
                 <tbody id="tableDanhSach"></tbody>
@@ -213,7 +214,7 @@
 				</div> -->
 
           <!-- Modal body -->
-          <div id ="modal" class="modal-body">
+          <div id="modal" class="modal-body">
             <form role="form">
               <div class="form-group">
                 <div class="input-group">
@@ -372,7 +373,12 @@
             >
               Thêm người dùng
             </button>
-            <button id="btnCapNhat" type="button" class="btn btn-success">
+            <button
+              id="btnCapNhat"
+              type="button"
+              class="btn btn-success"
+              onclick="updateInfo()"
+            >
               Cập nhật
             </button>
             <button
@@ -380,6 +386,7 @@
               type="button"
               class="btn btn-danger"
               data-dismiss="modal"
+              onclick="reset"
             >
               Đóng
             </button>
@@ -387,7 +394,26 @@
         </div>
       </div>
     </div>
-
+    <!-- modal verify delete -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Hey!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Bạn có chắc muốn xóa nhân viên này?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-primary" id ="VerifyDelete">Xác nhận</button>
+      </div>
+    </div>
+  </div>
+</div>
     <!-- Bootstrap -->
     <script src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.min.js"></script>
@@ -414,7 +440,8 @@
         });
       });
     </script>
-	<script src="./models/QuanLyNhanVien.js"></script>
-	<script src="./js/index.js"></script>
+
+    <script src="./models/QuanLyNhanVien.js"></script>
+    <script src="./js/index.js"></script>
   </body>
 </html>
