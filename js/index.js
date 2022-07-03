@@ -11,6 +11,17 @@ function creatStaff() {
   var level = document.getElementById("chucvu").value;
   var workingHours = +document.getElementById("gioLam").value;
 
+  // kiểm tra validation form
+  var isValid = validation();
+  if (!isValid) {
+    return alert("Vui lòng kiểm tra giá trị input");
+  }
+  // kiểm tra account có trùng?
+  var index = findStaff(account);
+  if (index !== -1) {
+    alert("Account đã bị trùng");
+    return;
+  }
   // tạo 1 staff mới
   var newStaff = new Staff(
     account,
@@ -25,27 +36,19 @@ function creatStaff() {
   //   push staff mới thêm vào danh sách và cho hiện ra console
   staffList.push(newStaff);
   // console.log(staffList);
-
-  // kiểm tra validation form
-  var isValid = validation();
-  if (!isValid) {
-    return alert("Vui lòng kiểm tra giá trị input");
-  }
-  // kiểm tra account có trùng?
-  var index = findStaff(account);
-  if (index !== -1) {
-    return alert("Account đã bị trùng");
-  }
-
+  alert("Thêm nhân viên thành công");
   renderTable();
   setData();
 }
 
 // in ra giao diện
-function renderTable() {
+function renderTable(data) {
+  if (!data) {
+    data = staffList;
+  }
   var html = "";
-  for (var i = 0; i < staffList.length; i++) {
-    var currentStaff = staffList[i];
+  for (var i = 0; i < data.length; i++) {
+    var currentStaff = data[i];
 
     html += `
         <tr>
@@ -291,4 +294,23 @@ function validation() {
     }
   }
   return isValid;
+}
+
+// -----------------------SEARCH FUNCTION---------------------------
+function staffSearching() {
+  let searchList = [];
+  //lấy keyword của người dùng
+  let keyword = document
+    .getElementById("searchName")
+    .value.toLowerCase()
+    .trim();
+  // console.log (keyword)
+  for (let i = 0; i < staffList.length; i++) {
+    let currentStaff = staffList[i];
+    if (currentStaff.staffClassification().toLowerCase().includes(keyword)) {
+      searchList.push(currentStaff);
+    }
+  }
+  // console.log(searchList)
+  renderTable(searchList);
 }
