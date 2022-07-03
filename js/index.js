@@ -39,6 +39,7 @@ function creatStaff() {
   alert("Thêm nhân viên thành công");
   renderTable();
   setData();
+  $("#myModal").modal("hide");
 }
 
 // in ra giao diện

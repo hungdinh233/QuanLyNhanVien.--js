@@ -21,6 +21,7 @@
     <!-- <link rel="stylesheet" href="css/animate.css"> -->
 
     <!-- My CSS -->
+    <link rel="stylesheet" href="./css/text-danger.css" />
     <link rel="stylesheet" href="css/modal.css" />
 
     <link rel="stylesheet" href="css/style4.css" />
@@ -155,7 +156,9 @@
                       class="form-control"
                       placeholder="Loại nhân viên"
                       id="searchName"
+                      onkeyup="staffSearching()"
                     />
+
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="btnTimNV"
                         ><i class="fa fa-search"></i
@@ -215,7 +218,7 @@
 
           <!-- Modal body -->
           <div id="modal" class="modal-body">
-            <form role="form">
+            <form role="form" id="staffForm">
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-prepend">
@@ -229,10 +232,12 @@
                     id="tknv"
                     class="form-control input-sm"
                     placeholder="Tài khoản"
+                    required
+                    pattern="[0-9]{4,6}$"
                   />
                 </div>
 
-                <span class="sp-thongbao" id="tbTKNV"></span>
+                <span class="text-danger" id="tbTKNV"></span>
               </div>
 
               <div class="form-group">
@@ -248,9 +253,11 @@
                     id="name"
                     class="form-control input-sm"
                     placeholder="Họ và tên"
+                    required
+                    pattern="[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+$"
                   />
                 </div>
-                <span class="sp-thongbao" id="tbTen"></span>
+                <span class="text-danger" id="tbTen"></span>
               </div>
 
               <div class="form-group">
@@ -266,10 +273,12 @@
                     id="email"
                     class="form-control input-sm"
                     placeholder="Email"
+                    required
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   />
                 </div>
 
-                <span class="sp-thongbao" id="tbEmail"></span>
+                <span class="text-danger" id="tbEmail"></span>
               </div>
 
               <div class="form-group">
@@ -285,9 +294,11 @@
                     id="password"
                     class="form-control input-sm"
                     placeholder="Mật khẩu"
+                    required
+                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$"
                   />
                 </div>
-                <span class="sp-thongbao" id="tbMatKhau"></span>
+                <span class="text-danger" id="tbMatKhau"></span>
               </div>
 
               <div class="form-group">
@@ -298,15 +309,16 @@
                     ></span>
                   </div>
                   <input
-                    type="text"
+                    type="date"
                     name="ngaylam"
                     id="datepicker"
                     class="form-control"
                     placeholder="Ngày làm"
+                    required
                   />
                 </div>
 
-                <span class="sp-thongbao" id="tbNgay"></span>
+                <span class="text-danger" id="tbNgay"></span>
               </div>
 
               <div class="form-group">
@@ -322,9 +334,11 @@
                     id="luongCB"
                     class="form-control input-sm"
                     placeholder="Lương cơ bản"
+                    required
+                    pattern="[0-9]{7,8}$"
                   />
                 </div>
-                <span class="sp-thongbao" id="tbLuongCB"></span>
+                <span class="text-danger" id="tbLuongCB"></span>
               </div>
               <div class="form-group">
                 <div class="input-group">
@@ -333,15 +347,15 @@
                       ><i class="fa fa-briefcase"></i
                     ></span>
                   </div>
-                  <select class="form-control" id="chucvu">
-                    <option>Chọn chức vụ</option>
+                  <select class="form-control" id="chucvu" required>
+                    <option value="">Chọn chức vụ</option>
                     <option value="Sếp">Sếp</option>
                     <option value="Trưởng phòng">Trưởng phòng</option>
                     <option value="Nhân viên">Nhân viên</option>
                   </select>
                 </div>
 
-                <span class="sp-thongbao" id="tbChucVu"></span>
+                <span class="text-danger" id="tbChucVu"></span>
               </div>
               <div class="form-group">
                 <div class="input-group">
@@ -351,14 +365,17 @@
                     ></span>
                   </div>
                   <input
-                    type="text"
+                    type="number"
                     name="gioLam"
                     id="gioLam"
                     class="form-control input-sm"
-                    placeholder="Giờ làm"
+                    placeholder="Giờ làm trong tháng"
+                    required
+                    min="80"
+                    max="200"
                   />
                 </div>
-                <span class="sp-thongbao" id="tbGiolam"></span>
+                <span class="text-danger" id="tbGiolam"></span>
               </div>
             </form>
           </div>
@@ -395,25 +412,41 @@
       </div>
     </div>
     <!-- modal verify delete -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Hey!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Bạn có chắc muốn xóa nhân viên này?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" id ="VerifyDelete">Xác nhận</button>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Hey!</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">Bạn đã xóa thành công nhân viên này!</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Đóng
+            </button>
+            <!-- <button type="button" class="btn btn-primary" onclick="verifyDelete(deleteAccount)">Xác nhận</button> -->
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
     <!-- Bootstrap -->
     <script src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.min.js"></script>
